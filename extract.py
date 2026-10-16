@@ -8,7 +8,7 @@ s = open(src).read()
 s = re.sub(r'<h2 class="field">.*?</h2>', "", s, count=1, flags=re.S)
 # the 3D plot is pulled up under the title (a negative margin); without the title, pull it up that much less
 s = re.sub(r'style="margin-top:\s*(-?\d+)px;?"', lambda m: f'style="margin-top: {int(m.group(1)) + title_h}px;"', s, count=1)
-s = re.sub(r'(<svg[^>]*?height=")(\d+)(")', lambda m: f"{m.group(1)}{int(m.group(2)) - title_h}{m.group(3)}", s, count=1)
+s = re.sub(r'(<svg[^>]*?height=")(\d+)(")', lambda m: f"{m.group(1)}{int(m.group(2)) - title_h - 55}{m.group(3)}", s, count=1)  # also the empty space below the plot
 # the stats: same size as the other panels' tables (this panel is shown twice as wide), and pushed right
 s = s.replace("</style>", ".row h3.field,.row .field{font-size:7.5px!important;margin-bottom:1px}"
               ".row .field svg{width:8px;height:8px;margin:0 4px}"
