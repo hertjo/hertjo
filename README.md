@@ -3,6 +3,6 @@
 </p>
 
 <p align="center">
-  <img src="languages.svg" alt="Most used languages" width="49%">
-  <img src="lines.svg" alt="Lines of code changed" width="49%">
+  <img src="languages.svg" alt="Most used languages" width="49%" align="top">
+  <img src="lines.svg" alt="Lines of code pushed, by repository" width="49%" align="top">
 </p>
