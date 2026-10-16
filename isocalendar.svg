@@ -50,7 +50,7 @@
                         </div>
                     </section>
                 </div>
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" style="margin-top: -130px;" viewBox="0,0 480,270">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" style="margin-top: -100px;" viewBox="0,0 480,270">
                     <filter id="brightness1">
                         <feComponentTransfer>
                             <feFuncR type="linear" slope="0.6"/>
