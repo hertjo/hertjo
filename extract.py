@@ -20,7 +20,7 @@ GROUP = re.compile(r'<g transform="translate\(([-\d.]+), ([-\d.]+)\)">\s*(<path 
 best = max(GROUP.finditer(s), key=lambda m: float(m.group(5)), default=None)
 if best:
     h = float(best.group(5)) - 2           # the bar's height
-    H = h * 2.4                            # taller than the bar: it is the Empire State Building
+    H = h * 1.12                           # just a little taller than the bar it replaces
     col = best.group(4)
     cx, cy = 1.7, 1.0
 
