@@ -51,10 +51,13 @@ jobs:
           plugin_lines_history_limit: 1
           plugin_lines_repositories_limit: 10
       - name: Commit
+        env:
+          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
         run: |
           python3 extract.py /metrics_renders/isocalendar-full.svg isocalendar.svg 30
           cp /metrics_renders/languages.svg languages.svg
-          cp /metrics_renders/lines.svg lines.svg
+          gh repo list hertjo --visibility private --limit 500 --json name --jq '.[].name' > /tmp/private.txt
+          python3 tidy_lines.py /metrics_renders/lines.svg lines.svg /tmp/private.txt
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add isocalendar.svg languages.svg lines.svg
