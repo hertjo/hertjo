@@ -42,7 +42,8 @@ jobs:
           output_action: none
           filename: lines.svg
           token: ${{ secrets.METRICS_TOKEN }}
-          base: ""
+          base: repositories
+          base_skip: yes
           plugin_lines: yes
           plugin_lines_sections: base
           plugin_lines_history_limit: 1
