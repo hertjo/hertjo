@@ -17,6 +17,22 @@ s = s.replace("</style>", ".row h3.field,.row .field{font-size:7.5px!important;m
 # ---- the Empire State Building on the busiest day
 GROUP = re.compile(r'<g transform="translate\(([-\d.]+), ([-\d.]+)\)">\s*(<path fill="(#[0-9a-f]{6})" d="M1\.7,2 0,1 1\.7,0 3\.4,1 z"/>\s*'
                    r'<path[^>]*?d="M0,1 1\.7,2 1\.7,([-\d.]+) 0,[-\d.]+ z"/>\s*<path[^>]*?/>)\s*</g>')
+bars = list(GROUP.finditer(s))
+max_height = max((float(m.group(5)) - 2 for m in bars), default=0)
+
+def raise_bar(m):
+    h = float(m.group(5)) - 2
+    if h <= 0 or max_height <= 0:
+        return m.group(0)
+    height = (h * max_height) ** 0.5
+    x, y, color = m.group(1), float(m.group(2)) + h - height, m.group(4)
+    return (f'<g transform="translate({x}, {y})">'
+            f'<path fill="{color}" d="M1.7,2 0,1 1.7,0 3.4,1 z"/>'
+            f'<path fill="{color}" filter="url(#brightness1)" d="M0,1 1.7,2 1.7,{2 + height} 0,{1 + height} z"/>'
+            f'<path fill="{color}" filter="url(#brightness2)" d="M1.7,2 3.4,1 3.4,{1 + height} 1.7,{2 + height} z"/>'
+            '</g>')
+
+s = GROUP.sub(raise_bar, s)
 best = max(GROUP.finditer(s), key=lambda m: float(m.group(5)), default=None)
 if best:
     h = float(best.group(5)) - 2           # the bar's height
