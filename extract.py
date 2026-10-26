@@ -2,6 +2,7 @@
 the Empire State Building."""
 import re
 import sys
+import math
 
 src, out, title_h = sys.argv[1], sys.argv[2], int(sys.argv[3]) if len(sys.argv) > 3 else 30
 s = open(src).read()
@@ -19,12 +20,16 @@ GROUP = re.compile(r'<g transform="translate\(([-\d.]+), ([-\d.]+)\)">\s*(<path 
                    r'<path[^>]*?d="M0,1 1\.7,2 1\.7,([-\d.]+) 0,[-\d.]+ z"/>\s*<path[^>]*?/>)\s*</g>')
 bars = list(GROUP.finditer(s))
 max_height = max((float(m.group(5)) - 2 for m in bars), default=0)
+height_multiplier = 3
+headroom = math.ceil(4 * max_height * (height_multiplier - 1) * 1.12)
+s = re.sub(r'viewBox="0,0 480,(\d+)"', lambda m: f'viewBox="0,{-headroom} 480,{int(m.group(1)) + headroom}"', s, count=1)
+s = re.sub(r'(<svg[^>]*?height=")(\d+)(")', lambda m: f'{m.group(1)}{int(m.group(2)) + headroom}{m.group(3)}', s, count=1)
 
 def raise_bar(m):
     h = float(m.group(5)) - 2
     if h <= 0 or max_height <= 0:
         return m.group(0)
-    height = (h * max_height) ** 0.5
+    height = h * height_multiplier
     x, y, color = m.group(1), float(m.group(2)) + h - height, m.group(4)
     return (f'<g transform="translate({x}, {y})">'
             f'<path fill="{color}" d="M1.7,2 0,1 1.7,0 3.4,1 z"/>'
